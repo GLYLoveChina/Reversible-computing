@@ -1,0 +1,81 @@
+//Reversible Bellman-Ford algorithm
+procedure main()
+    int node_size = 9
+    //represents the graph as an adjacency list, G has the edges and weight, nodes has start index and parent
+    int G[28][2] = {{1,4}, {7,8}, {0,4}, {2,8}, {7,11}, {1,8}, {3,7}, {5,4}, {8,2}, {2,7}, {4,9}, {5,14},{3,9},{5,10},{2,4},{3,14},{4,10},{6,2},{5,2},{7,1},{8,6},{0,8},{1,11},{6,1},{8,7},{2,2},{6,6},{7,7}}
+    int nodes[node_size][3] = {{0}, {2}, {5}, {9}, {12}, {14} ,{18}, {21}, {25}}
+    //source node
+    int s = 0
+    int isloop = 1
+    int garbage[(node_size-1)*size(G)*2+2] = {0}
+    int garbagecounter = 0
+    
+    call Bellman_Ford(G, nodes, s, isloop, garbage, garbagecounter)
+ 
+ procedure Bellman_Ford(int G[], int nodes[], int s, int isloop, int garbage[], int garbagecounter)
+    call initialize(nodes, s)
+    call relax(G, nodes, garbage, garbagecounter)
+    
+    local int j = 0, int k = 0
+    from j = 0 do
+        if nodes[G[j][0]][2] > nodes[k][2] + G[j][1] then
+            isloop -= 1
+            garbage[garbagecounter] += k
+            garbagecounter += 1
+            garbage[garbagecounter] += j
+            garbagecounter += 1
+        fi nodes[G[j][0]][2] > nodes[k][2] + G[j][1]
+        
+        if isloop = 1 then
+            j += 1
+            if (k < size(nodes) - 1) && (j = nodes[k+1][0]) then
+                k += 1
+            fi j = nodes[k][0]
+        fi isloop = 1
+    until isloop = 0 || j = size(G)
+    
+    if isloop = 0 then
+        j -= garbage[garbagecounter-1]
+        k -= garbage[garbagecounter-2]
+    else
+        j -= size(G)
+        k -= size(nodes) - 1
+    fi isloop = 0
+    
+    delocal int j = 0, int k = 0
+    
+procedure initialize(int nodes[], int s)
+    local int i = 1
+    nodes[0][1] -= 1
+    from i = 1 do
+        nodes[i][1] -= 1                  //no parent node
+        nodes[i][2] += 4294967295
+        i += 1
+    until i = size(nodes)
+    delocal int i = size(nodes)
+
+procedure relax(int G[], int nodes[], int garbage[], int garbagecounter)
+    local int i = 0
+    from i = 0 do
+        local int j = 0, int k = 0
+        from j = 0 do
+            if nodes[G[j][0]][2] >= nodes[k][2] + G[j][1] then
+                nodes[G[j][0]][1] <=> garbage[garbagecounter]
+                nodes[G[j][0]][1] += k
+                garbagecounter += 1
+                nodes[G[j][0]][2] <=> garbage[garbagecounter]
+                garbagecounter += 1
+                nodes[G[j][0]][2] += nodes[k][2] + G[j][1]
+            fi nodes[G[j][0]][2] = nodes[k][2] + G[j][1]                
+            
+            j += 1
+            if (k < size(nodes) - 1) && (j = nodes[k+1][0]) then
+                k += 1
+            fi j = nodes[k][0]
+        until j = size(G)
+        
+        delocal int j = size(G), int k = size(nodes) - 1
+        i += 1
+    until i = size(nodes) - 2
+    
+    delocal int i = size(nodes) - 2
