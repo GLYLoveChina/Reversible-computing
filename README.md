@@ -1,2 +1,2 @@
 # Reversible-computing
-Reversible programs
+All programs can be executed on http://tetsuo.jp/janus-playground/ platform.
