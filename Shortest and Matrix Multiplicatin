@@ -1,0 +1,66 @@
+procedure main()
+    int nodes = 5
+    int W[nodes][nodes] = {{0,3,8,4294967295,-4},{4294967295,0,4294967295,1,7},{4294967295,4,0,4294967295,4294967295},{2,4294967295,-5,0,4294967295},{4294967295,4294967295,4294967295,6,0}}
+    int L[nodes][nodes][nodes] = {{{0}}}
+    int Lcounter = 0
+    int garbage[nodes][nodes*nodes*nodes] = {{0}}
+    int garbagecounter_out = 0
+    
+    call all_pair_shortest(W, L, Lcounter, garbage, garbagecounter_out)
+    
+procedure all_pair_shortest(int W[], int L[], int Lcounter, int garbage[], int garbagecounter_out)
+    local int n = size(W)
+    local int i = 0
+    from i = 0 do
+        local int j = 0
+        from j = 0 do
+            L[Lcounter][i][j] += W[i][j]
+            j += 1
+        until j = n
+        
+        i += 1
+        delocal int j = n
+    until i = n
+    delocal int i = n
+    Lcounter += 1
+    
+    local int m = 1
+    from m = 1 do
+        call extend_shortest(W, L, Lcounter, garbage, garbagecounter_out)
+        Lcounter += 1
+        garbagecounter_out += 1
+        
+        local int temp = m
+        m += temp
+        delocal int temp = m/2
+    until m = n - 1
+    
+    delocal int m = n - 1
+    delocal int n = size(W)
+    
+procedure extend_shortest(int W[], int L[], int Lcounter, int garbage[], int garbagecounter_out)
+    local int n = size(W), int i = 0, int garbagecounter_in = 0
+    from i = 0 do
+        local int j = 0
+        from j = 0 do
+            L[Lcounter][i][j] += 4294967295
+            local int k = 0
+            from k = 0 do
+                if  L[Lcounter][i][j] >= L[Lcounter-1][i][k] + W[k][j] then
+                    garbage[garbagecounter_out][garbagecounter_in] <=> L[Lcounter][i][j]
+                    L[Lcounter][i][j] += L[Lcounter-1][i][k] + W[k][j]
+                fi L[Lcounter][i][j] = L[Lcounter-1][i][k] + W[k][j]
+                
+                k += 1
+                garbagecounter_in += 1
+            until k = n
+            
+            j += 1
+            delocal int k = n
+        until j = n
+        
+        i += 1
+        delocal int j = n
+    until i = n
+    
+    delocal int n = size(W), int i = n, int garbagecounter_in = n*n*n
