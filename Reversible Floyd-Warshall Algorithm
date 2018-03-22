@@ -1,0 +1,59 @@
+procedure main()
+    int nodes = 5
+    int W[nodes][nodes] = {{0,3,8,4294967295,-4},{4294967295,0,4294967295,1,7},{4294967295,4,0,4294967295,4294967295},{2,4294967295,-5,0,4294967295},{4294967295,4294967295,4294967295,6,0}}
+    int D[nodes][nodes] = {{0}}
+    int garbage[nodes*nodes*nodes*2] = {0}
+    int garbagecounter = 0
+    
+    call Floyd_Warshall(W, D, garbage, garbagecounter)
+
+procedure Floyd_Warshall(int W[], int D[], int garbage[], int garbagecounter)
+    local int k = 0, int nodes_size = size(W)
+    call initialize_result(W,D)
+    
+    from k = 0 do
+        local int i = 0
+        from i = 0 do
+            local int j = 0
+            from j = 0 do
+                if W[i][j] > W[i][k] + W[k][j] then
+                    garbage[garbagecounter] += D[i][j] - D[k][j]  
+                    D[i][j] -= garbage[garbagecounter]
+                    garbagecounter += 1
+                fi W[i][j] > W[i][k] + W[k][j]
+                
+                if W[i][j] >= W[i][k] + W[k][j] then
+                    garbage[garbagecounter] += W[i][j] - (W[i][k] + W[k][j])
+                    garbagecounter += 1
+                    W[i][j] -= garbage[garbagecounter-1]
+                fi W[i][j] = W[i][k] + W[k][j]
+                j += 1
+            until j = nodes_size
+
+            delocal int j = nodes_size
+            i += 1
+        until i = nodes_size
+        
+        delocal int i = nodes_size
+        k += 1
+    until k = nodes_size
+    
+    delocal int k = size(W), int nodes_size = size(W)
+    
+procedure initialize_result(int W[], int D[])
+    local int i = 0, int nodes = size(W)
+    from i = 0 do
+        local int j = 0
+        from j = 0 do
+            if i != j && W[i][j] != 4294967295 then
+                D[i][j] += i + 1
+            fi  i != j && W[i][j] != 4294967295
+            
+            j += 1
+        until j = nodes
+        
+        delocal int j = nodes
+        i += 1
+    until i = nodes
+    
+    delocal int i = size(W), int nodes = size(W)
