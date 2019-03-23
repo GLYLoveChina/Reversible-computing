@@ -1,0 +1,28 @@
+procedure QUEUE_EMPTY(int Q[], int Q_head, int Q_tail, int Q_empty)
+    if Q_head = Q_tail then
+        Q_empty ^= 1
+    fi Q_head = Q_tail
+
+
+procedure ENQUEUE(int Q[], int Q_head, int Q_tail, int x)
+    if Q_head = Q_tail + 1 then
+        error("overflow")
+    fi Q_head = Q_tail + 1
+    Q[Q_tail] += x
+    if Q_tail = size(Q)-1 then
+        Q_tail -= size(Q) - 2
+    else
+        Q_tail += 1
+    fi Q_tail = 1
+
+procedure DEQUEUE(int Q[], int Q_head, int Q_tail, int x)
+    if Q_head = Q_tail then
+        error("underflow")
+    fi Q_head = Q_tail
+    x += Q[Q_head]
+    Q[Q_head] -= x
+    if Q_head = size(Q) - 1 then
+        Q_haed -= size(Q) - 2
+    else
+        Q_head += 1
+    fi Q_head = 1
