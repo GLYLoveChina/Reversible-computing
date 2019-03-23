@@ -1,0 +1,22 @@
+//判断栈是否为空
+procedure STACK_EMPTY(int S[], int S_top, int S_empty)
+    if S_top = 0 then
+        S_empty ^= 1
+    fi S_top = 0
+
+//入栈
+procedure PUSH(int S[], int S_top, int x)
+    if S_top = size(S) - 1 then
+        error("overflow")
+    fi S_top = size(S) - 1
+    S_top += 1
+    S[S_top] += x
+   
+//出栈
+procedure POP(int S[], int S_top, int x)
+    if S_top = 0 then
+        error("underflow")
+    fi S_top = 0
+    x += S_top
+    S[S_top] -= x
+    S_top -= 1
