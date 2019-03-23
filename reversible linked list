@@ -1,0 +1,71 @@
+//链表的搜索
+procedure SEARCH(int L[], int L_head, int k, int index)
+    local int x = L_head
+    from x = 0 loop
+        local int y = L[x][2]
+        x <=> y
+        delocal int y = L[x][0]
+    until (L[x][1] = k) || (x = -1)
+    if x != -1 then
+        index += 1 + x
+    fi x != -1
+    delocal int x = index
+    
+//查询元素x的前驱或后继
+rocedure SUCCESSOR(int L[], int L_head, int x, int successor)
+    if L[x][2] != -1 then
+        successor += L[x][2] + 1
+    fi L[x][2] != -1
+
+procedure PREDECESSOR (int L[], int L_head, int x, int predecessor)
+    if L[x][2] != -1 then
+        predecessor += L[x][0] + 1
+    fi L[x][2] != -1
+
+//链表的插入
+procedure INSERT(int L[], int L_head, int x)
+    L[x][2] += L_head
+    if L_head != -1 then
+        L[L_head][0] += x - L[L[x][2]][2] 
+    fi L_head != -1
+    L_head += x - L[x][2]
+    L[x][0] -= 1
+
+//链表的删除
+//利用指针删除
+procedure DELETE(int L[], int L_head, int x)
+    local int prev = L[x][0], int next = L[x][2]
+    if prev != -1 then
+        L[prev][2] += next - x
+    else
+        L_head += L[x][2] - x
+    fi prev != -1
+    if next != -1 then
+        L[next][0] += prev - x
+    fi next != -1
+    delocal int prev = L[x][0], int next = L[x][2]
+
+//利用关键字删除
+procedure DELETE_KEY(int L[], int L_head, int k, stack g)
+    local int index = 0
+    call SEARCH(L, L_head, k, index)
+    call DELETE(L, L_head, index)
+    push(index, g)
+    delocal int index = 0
+    
+//有序链表查询最小元素和最大元素
+procedure MINIMUM(int L[], int L_head, int min)
+    if L_head != -1 then
+        min += L_head + 1
+    fi L_head != -1
+    
+procedure MAXIMUM (int L[], int L_head, int max)
+    if L_head != -1 then
+        max += L_head 
+        from max = L_head loop
+            local int y = L[max][2]
+            max<=> y
+            delocal int y = L[max][0]
+        until L[max][2] = -1
+    fi L_head != -1
+
